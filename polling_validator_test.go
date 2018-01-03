@@ -43,7 +43,7 @@ func (vt *PollingValidatorTest) WriteEmails(t *testing.T, emails []string) {
 	}
 }
 
-func TestValidatorEmpty(t *testing.T) {
+func TestPollingValidatorEmpty(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
@@ -57,7 +57,7 @@ func TestValidatorEmpty(t *testing.T) {
 	}
 }
 
-func TestValidatorSingleEmail(t *testing.T) {
+func TestPollingValidatorSingleEmail(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
@@ -74,7 +74,7 @@ func TestValidatorSingleEmail(t *testing.T) {
 	}
 }
 
-func TestValidatorSingleDomain(t *testing.T) {
+func TestPollingValidatorSingleDomain(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
@@ -90,7 +90,7 @@ func TestValidatorSingleDomain(t *testing.T) {
 	}
 }
 
-func TestValidatorMultipleEmailsMultipleDomains(t *testing.T) {
+func TestPollingValidatorMultipleEmailsMultipleDomains(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
@@ -119,7 +119,7 @@ func TestValidatorMultipleEmailsMultipleDomains(t *testing.T) {
 	}
 }
 
-func TestValidatorComparisonsAreCaseInsensitive(t *testing.T) {
+func TestPollingValidatorComparisonsAreCaseInsensitive(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
@@ -141,7 +141,7 @@ func TestValidatorComparisonsAreCaseInsensitive(t *testing.T) {
 	}
 }
 
-func TestValidatorIgnoreSpacesInAuthEmails(t *testing.T) {
+func TestPollingValidatorIgnoreSpacesInAuthEmails(t *testing.T) {
 	vt := NewPollingValidatorTest(t)
 	defer vt.TearDown()
 
