@@ -52,6 +52,8 @@ func main() {
 	flagSet.String("client-id", "", "the OAuth Client ID: ie: \"123456.apps.googleusercontent.com\"")
 	flagSet.String("client-secret", "", "the OAuth Client Secret")
 	flagSet.String("authenticated-emails-file", "", "authenticate against emails via file (one per line)")
+	flagSet.Bool("authenticated-emails-file-poll", false, "poll (instead of watching for changes) \"authenticated-emails-file\"")
+	flagSet.Duration("authenticated-emails-file-poll-interval", time.Duration(1)*time.Second, "interval between polls of \"authenticated-emails-file\"")
 	flagSet.String("htpasswd-file", "", "additionally authenticate against a htpasswd file. Entries must be created with \"htpasswd -s\" for SHA encryption")
 	flagSet.Bool("display-htpasswd-form", true, "display username / password login form if an htpasswd file is provided")
 	flagSet.String("custom-templates-dir", "", "path to custom html templates")
@@ -104,7 +106,14 @@ func main() {
 		log.Printf("%s", err)
 		os.Exit(1)
 	}
-	validator := NewValidator(opts.EmailDomains, opts.AuthenticatedEmailsFile)
+	validator := func(email string) (valid bool) {
+		return
+	}
+	if opts.AuthenticatedEmailsFilePoll {
+		validator = PollingValidator(opts.EmailDomains, opts.AuthenticatedEmailsFile, opts.AuthenticatedEmailsFilePollInterval)
+	} else {
+		validator = NewValidator(opts.EmailDomains, opts.AuthenticatedEmailsFile)
+	}
 	oauthproxy := NewOAuthProxy(opts, validator)
 
 	if len(opts.EmailDomains) != 0 && opts.AuthenticatedEmailsFile == "" {

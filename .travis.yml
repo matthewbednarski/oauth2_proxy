@@ -1,4 +1,6 @@
 language: go
+go_import_path: github.com/bitly/oauth2_proxy
+
 go:
   - 1.8.x
   - 1.9.x

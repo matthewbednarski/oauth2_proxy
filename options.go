@@ -29,7 +29,10 @@ type Options struct {
 	TLSCertFile  string `flag:"tls-cert" cfg:"tls_cert_file"`
 	TLSKeyFile   string `flag:"tls-key" cfg:"tls_key_file"`
 
-	AuthenticatedEmailsFile  string   `flag:"authenticated-emails-file" cfg:"authenticated_emails_file"`
+	AuthenticatedEmailsFile             string        `flag:"authenticated-emails-file" cfg:"authenticated_emails_file" env:"AUTH_EMAILS_FILE"`
+	AuthenticatedEmailsFilePoll         bool          `flag:"authenticated-emails-poll" cfg:"authenticated_emails_file_poll" env:"AUTH_EMAILS_FILE_POLL"`
+	AuthenticatedEmailsFilePollInterval time.Duration `flag:"authenticated-emails-poll-interval" cfg:"authenticated_emails_file_poll_interval" env:"AUTH_EMAILS_FILE_POLL_INTERVAL"`
+
 	AzureTenant              string   `flag:"azure-tenant" cfg:"azure_tenant"`
 	EmailDomains             []string `flag:"email-domain" cfg:"email_domains"`
 	GitHubOrg                string   `flag:"github-org" cfg:"github_org"`
@@ -94,23 +97,25 @@ type SignatureData struct {
 
 func NewOptions() *Options {
 	return &Options{
-		ProxyPrefix:         "/oauth2",
-		HttpAddress:         "127.0.0.1:4180",
-		HttpsAddress:        ":443",
-		DisplayHtpasswdForm: true,
-		CookieName:          "_oauth2_proxy",
-		CookieSecure:        true,
-		CookieHttpOnly:      true,
-		CookieExpire:        time.Duration(168) * time.Hour,
-		CookieRefresh:       time.Duration(0),
-		SetXAuthRequest:     false,
-		SkipAuthPreflight:   false,
-		PassBasicAuth:       true,
-		PassUserHeaders:     true,
-		PassAccessToken:     false,
-		PassHostHeader:      true,
-		ApprovalPrompt:      "force",
-		RequestLogging:      true,
+		ProxyPrefix:                         "/oauth2",
+		HttpAddress:                         "127.0.0.1:4180",
+		HttpsAddress:                        ":443",
+		DisplayHtpasswdForm:                 true,
+		CookieName:                          "_oauth2_proxy",
+		CookieSecure:                        true,
+		CookieHttpOnly:                      true,
+		CookieExpire:                        time.Duration(168) * time.Hour,
+		CookieRefresh:                       time.Duration(0),
+		SetXAuthRequest:                     false,
+		SkipAuthPreflight:                   false,
+		PassBasicAuth:                       true,
+		PassUserHeaders:                     true,
+		PassAccessToken:                     false,
+		PassHostHeader:                      true,
+		ApprovalPrompt:                      "force",
+		RequestLogging:                      true,
+		AuthenticatedEmailsFilePoll:         false,
+		AuthenticatedEmailsFilePollInterval: time.Duration(1) * time.Minute,
 	}
 }
 
