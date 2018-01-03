@@ -16,7 +16,7 @@ type PollingValidatorTest struct {
 func NewPollingValidatorTest(t *testing.T) *PollingValidatorTest {
 	vt := &PollingValidatorTest{}
 	var err error
-	vt.auth_email_file, err = ioutil.TempFile("", "test_auth_emails_")
+	vt.auth_email_file, err = ioutil.TempFile("", "test_polling_auth_emails_")
 	if err != nil {
 		t.Fatal("failed to create temp file: " + err.Error())
 	}
@@ -49,7 +49,7 @@ func TestPollingValidatorEmpty(t *testing.T) {
 
 	vt.WriteEmails(t, []string(nil))
 	domains := []string(nil)
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 1000000*time.Millisecond)
 
 	if validator("foo.bar@example.com") {
 		t.Error("nothing should validate when the email and " +
@@ -63,7 +63,7 @@ func TestPollingValidatorSingleEmail(t *testing.T) {
 
 	vt.WriteEmails(t, []string{"foo.bar@example.com"})
 	domains := []string(nil)
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 100000000*time.Millisecond)
 
 	if !validator("foo.bar@example.com") {
 		t.Error("email should validate")
@@ -80,7 +80,7 @@ func TestPollingValidatorSingleDomain(t *testing.T) {
 
 	vt.WriteEmails(t, []string(nil))
 	domains := []string{"example.com"}
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 100000000*time.Millisecond)
 
 	if !validator("foo.bar@example.com") {
 		t.Error("email should validate")
@@ -99,7 +99,7 @@ func TestPollingValidatorMultipleEmailsMultipleDomains(t *testing.T) {
 		"plugh@example.com",
 	})
 	domains := []string{"example0.com", "example1.com"}
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 100000000*time.Millisecond)
 
 	if !validator("foo.bar@example0.com") {
 		t.Error("email from first domain should validate")
@@ -125,7 +125,7 @@ func TestPollingValidatorComparisonsAreCaseInsensitive(t *testing.T) {
 
 	vt.WriteEmails(t, []string{"Foo.Bar@Example.Com"})
 	domains := []string{"Frobozz.Com"}
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 100000000*time.Millisecond)
 
 	if !validator("foo.bar@example.com") {
 		t.Error("loaded email addresses are not lower-cased")
@@ -147,7 +147,7 @@ func TestPollingValidatorIgnoreSpacesInAuthEmails(t *testing.T) {
 
 	vt.WriteEmails(t, []string{"   foo.bar@example.com   "})
 	domains := []string(nil)
-	validator := vt.NewValidator(domains, 1*time.Millisecond)
+	validator := vt.NewValidator(domains, 100000000*time.Millisecond)
 
 	if !validator("foo.bar@example.com") {
 		t.Error("email should validate")
